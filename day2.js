@@ -4,13 +4,10 @@ let policy1Count = 0
 let policy2Count = 0
 
 for (let i of input) {
-  const parts = i.split(' ');
-  const match = parts[0].match(/\d+/g);
+  const [numbers, letters, password] = i.split(' ');
+  const [num1, num2] = numbers.match(/\d+/g);
 
-  const num1 = Number(match[0]);
-  const num2 = Number(match[1]);
-  const letter = parts[1][0];
-  const password = parts[2];
+  const letter = letters[0];
 
   const test = password.match(new RegExp(letter, 'g'));
 
