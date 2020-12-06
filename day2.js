@@ -3,7 +3,7 @@ const input = require('./day2_input.json');
 let policy1Count = 0
 let policy2Count = 0
 
-for (let i of input) {
+for (const i of input) {
   const [numbers, letters, password] = i.split(' ');
   const [num1, num2] = numbers.match(/\d+/g);
 

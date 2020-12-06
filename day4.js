@@ -6,10 +6,10 @@ const lines = file.toString().split('\n');
 let validPassports1 = 0;
 let validPassports2 = 0;
 
-let fieldSet1 = new Set();
-let fieldSet2 = new Set();
+const fieldSet1 = new Set();
+const fieldSet2 = new Set();
 
-for (let line of lines) {
+for (const line of lines) {
   if (line === '') {
     validPassports1 += Number(fieldSet1.size === 7);
     validPassports2 += Number(fieldSet2.size === 7);
@@ -19,7 +19,7 @@ for (let line of lines) {
   }
 
   const fields = line.split(' ');
-  for (let field of fields) {
+  for (const field of fields) {
     const [fieldName] = field.split(':');
   
     if (fieldName === 'cid') {

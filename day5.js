@@ -5,7 +5,7 @@ const lines = file.toString().split('\n');
 
 const seatIds = [];
 
-for (let line of lines) {
+for (const line of lines) {
   let id = 0;
   for (let i = 0; i < line.length; ++i) {
     if (line[i] === 'B') {
