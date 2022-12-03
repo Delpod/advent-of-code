@@ -13,11 +13,4 @@ for line in lines:
 	count2 += int(scores2[line.strip()])
 
 print(f"Part 1: {count}")
-print(f"Part 1: {count2}")
-
-# X == A
-# Y == B
-# Z == C
-# X > C
-# Y > A
-# Z > B
+print(f"Part 2: {count2}")
