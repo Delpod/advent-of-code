@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day9_input');
+const file = fs.readFileSync('./day09_input');
 const lines = file.toString().split('\n');
 
 const allNumbers = [];

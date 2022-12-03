@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day5_input');
+const file = fs.readFileSync('./day05_input');
 const lines = file.toString().split('\n');
 
 const seatIds = [];

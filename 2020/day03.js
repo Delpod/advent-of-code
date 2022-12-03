@@ -1,4 +1,4 @@
-const input = require('./day3_input.json');
+const input = require('./day03_input.json');
 const checks = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]];
 
 let answer = 1;

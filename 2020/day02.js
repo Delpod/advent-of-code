@@ -1,4 +1,4 @@
-const input = require('./day2_input.json');
+const input = require('./day02_input.json');
 
 let policy1Count = 0
 let policy2Count = 0

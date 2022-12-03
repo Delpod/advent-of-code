@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day8_input');
+const file = fs.readFileSync('./day08_input');
 const lines = file.toString().split('\n');
 
 const checkLines = (lines) => {

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day7_input');
+const file = fs.readFileSync('./day07_input');
 const lines = file.toString().split('\n');
 
 const testName = 'shiny gold';

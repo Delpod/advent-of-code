@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day4_input');
+const file = fs.readFileSync('./day04_input');
 const lines = file.toString().split('\n');
 
 let validPassports1 = 0;

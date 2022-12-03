@@ -1,4 +1,4 @@
-const input = require('./day1_input.json');
+const input = require('./day01_input.json');
 
 let r1 = null;
 let r2 = null;

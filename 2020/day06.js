@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = fs.readFileSync('./day6_input');
+const file = fs.readFileSync('./day06_input');
 const lines = file.toString().split('\n');
 
 let sum = 0;
