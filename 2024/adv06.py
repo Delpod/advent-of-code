@@ -29,7 +29,7 @@ def check_guard_path():
         y += y_mov
         
         if x < 0 or x >= size or y < 0 or y >= size:
-            return True, len(distinct_tiles)
+            return True, distinct_tiles
 
         if lines[y][x]:
             x -= x_mov
@@ -45,7 +45,7 @@ def check_guard_path():
             move = (x, y, x_mov, y_mov)
 
             if move in moves:
-                return False, len(distinct_tiles)
+                return False, distinct_tiles
 
             moves[move] = True
             continue
@@ -70,19 +70,18 @@ def check_guard_path():
 
 
 # Part 1
-_, result_p1 = check_guard_path()
+_, distinct_tiles = check_guard_path()
+result_p1 = len(distinct_tiles)
 
 # Part 2
 result_p2 = 0
-for i in range(size):
-    for j in range(size):
-        if not lines[i][j]:
-            lines[i][j] = True
-            did_get_out, _ = check_guard_path()
-            lines[i][j] = False
-            
-            if not did_get_out:
-                result_p2 += 1
+for j, i in distinct_tiles:
+    lines[i][j] = True
+    did_get_out, _ = check_guard_path()
+    lines[i][j] = False
+    
+    if not did_get_out:
+        result_p2 += 1
 
 print(f"Part 1: {result_p1}")
 print(f"Part 2: {result_p2}")
