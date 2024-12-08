@@ -25,8 +25,9 @@ def check_positions(calculate_resonant_harmonics):
 
                 diff = (value[0] - test_value[0], value[1] - test_value[1])
                 test_position = value
-                position_found = False
-                while calculate_resonant_harmonics or not position_found:
+                is_looping = True
+
+                while is_looping:
                     test_position = (test_position[0] - diff[0], test_position[1] - diff[1])
 
                     if test_position[0] < 0 or test_position[0] >= height or test_position[1] < 0 or test_position[1] >= width:
@@ -34,7 +35,7 @@ def check_positions(calculate_resonant_harmonics):
                     
                     if calculate_resonant_harmonics or lines[test_position[0]][test_position[1]] != key:
                         antinodes.add(test_position)
-                        position_found = True
+                        is_looping = calculate_resonant_harmonics
 
     return len(antinodes)
 
