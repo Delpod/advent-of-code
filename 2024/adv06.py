@@ -1,6 +1,6 @@
 # Setup
 file = open('adv06.txt', 'r')
-lines = [l.strip() for l in file.readlines()]
+lines = file.read().splitlines()
 
 size = len(lines)
 x_start, y_start = None, None

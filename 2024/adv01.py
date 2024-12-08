@@ -1,7 +1,7 @@
 # Setup
 from collections import Counter
 file = open('adv01.txt', 'r')
-lines = [l.strip() for l in file.readlines()]
+lines = file.read().splitlines()
 
 left_orig = []
 left = []

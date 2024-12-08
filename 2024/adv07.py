@@ -1,6 +1,6 @@
 # Setup
 file = open('adv07.txt', 'r')
-lines = [l.strip() for l in file.readlines()]
+lines = file.read().splitlines()
 
 
 def get_values(array, goal, concat_op):

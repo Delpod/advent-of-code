@@ -1,7 +1,7 @@
 # Setup
 import re
 file = open('adv03.txt', 'r')
-line = ' '.join([l.strip() for l in file.readlines()])
+line = ' '.join(file.read().splitlines())
 
 result_p1 = 0
 result_p2 = 0

@@ -1,6 +1,6 @@
 # Setup
 file = open('adv05.txt', 'r')
-lines = [l.strip() for l in file.readlines()]
+lines = file.read().splitlines()
 
 result_p1 = 0
 result_p2 = 0
