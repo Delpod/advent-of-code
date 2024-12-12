@@ -1,6 +1,10 @@
 # Setup
 file = open('adv11.txt', 'r')
 stones = [int(stone) for stone in file.read().split()]
+key_cache = {}
+len_cache = {}
+left_cache = {}
+right_cache = {}
 
 
 def get_after_iterations(stones, iterations):
@@ -16,13 +20,19 @@ def get_after_iterations(stones, iterations):
                 new_stones[1] = new_stones[1] + value if 1 in new_stones else value
                 continue
 
-            stonestr = str(key)
-            stonelen = len(stonestr)
+            if key not in len_cache:
+                key_cache[key] = str(key)
+                len_cache[key] = len(key_cache[key])
+                if len_cache[key] % 2 == 0:
+                    div2 = int(len_cache[key] / 2)
+                    left_cache[key] = int(key_cache[key][:div2])
+                    right_cache[key] = int(key_cache[key][div2:])
+                else:
+                    del key_cache[key]
 
-            if stonelen % 2 == 0:
-                div2 = int(stonelen / 2)
-                left = int(stonestr[:div2])
-                right = int(stonestr[div2:])
+            if len_cache[key] % 2 == 0:
+                left = left_cache[key]
+                right = right_cache[key]
                 new_stones[left] = new_stones[left] + value if left in new_stones else value
                 new_stones[right] = new_stones[right] + value if right in new_stones else value
                 continue
