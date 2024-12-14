@@ -1,6 +1,5 @@
 # Setup
 import re
-import math
 file = open('adv13.txt', 'r')
 lines = file.read().splitlines()
 
@@ -28,6 +27,7 @@ def calculate(plus_value = 0):
 
             if int(a) == a and int(b) == b:
                 result += int(a * 3 + b)
+
     return result
 
 print(f"Part 1: {calculate(0)}")
