@@ -1,6 +1,9 @@
 from functools import cache
+from itertools import permutations
+from math import inf
 file = open('adv21.txt', 'r')
 lines: list[str] = file.read().splitlines()
+
 
 numeric = {
     '7': (0, 0), '8': (0, 1), '9': (0, 2),
@@ -8,105 +11,105 @@ numeric = {
     '1': (2, 0), '2': (2, 1), '3': (2, 2),
                  '0': (3, 1), 'A': (3, 2),
 }
-directional = {
-                 '^': (0, 1), 'A': (0, 2),
-    '<': (1, 0), 'v': (1, 1), '>': (1, 2),
+
+directions = {
+    ('A', 'A'): 'A',
+    ('^', '^'): 'A',
+    ('>', '>'): 'A',
+    ('v', 'v'): 'A',
+    ('<', '<'): 'A',
+    ('A', '^'): '<A',
+    ('^', 'A'): '>A',
+    ('A', '>'): 'vA',
+    ('>', 'A'): '^A',
+    ('v', '^'): '^A',
+    ('^', 'v'): 'vA',
+    ('v', '<'): '<A',
+    ('<', 'v'): '>A',
+    ('v', '>'): '>A',
+    ('>', 'v'): '<A',
+    ('A', 'v'): '<vA',
+    ('v', 'A'): '^>A',
+    ('A', '<'): 'v<<A',
+    ('<', 'A'): '>>^A',
+    ('>', '<'): '<<A',
+    ('<', '>'): '>>A',
+    ('<', '^'): '>^A',
+    ('^', '<'): 'v<A',
+    ('>', '^'): '<^A',
+    ('^', '>'): 'v>A',
 }
 
-@cache
-def dir_to_numeric(cur: str, new: str):
-    result = ''
-    c = numeric[cur]
-    n = numeric[new]
-
-    if c[0] == 3 and n[1] == 0:
-        if c[0] > n[0]:
-            result += '^' * (c[0] - n[0])
-    else:
-        if c[0] < n[0]:
-            result += 'v' * (n[0] - c[0])
-
-    if c[1] < n[1]:
-        result += '>' * (n[1] - c[1])
-    elif c[1] > n[1]:
-        result += '<' * (c[1] - n[1])
-
-    if c[0] == 3 and n[1] == 0:
-        if c[0] < n[0]:
-            result += 'v' * (n[0] - c[0])
-    else:
-        if c[0] > n[0]:
-            result += '^' * (c[0] - n[0])
-
-    result += 'A'
-
-    return result
 
 @cache
-def dir_to_dir(cur: str, new: str):
-    result = ''
+def resolve_robot(cur: int, max: int, input: str):
+    cur_pos = 'A'
 
-    c = directional[cur]
-    n = directional[new]
-
-    if c[0] < n[0]:
-        result += 'v' * (n[0] - c[0])
-
-    if c[1] < n[1]:
-        result += '>' * (n[1] - c[1])
-    elif c[1] > n[1]:
-        result += '<' * (c[1] - n[1])
-
-    if c[0] > n[0]:
-        result += '^' * (c[0] - n[0])
-
-    result += 'A'
-
-    return result
-
-robots_cur = {}
-lenr2 = 0
-lenr25 = 0
-def resolve_robot(cur, max, input):
-    global lenr2, lenr25
-    if cur > max:
-        return
-
-    if cur not in robots_cur:
-        robots_cur[cur] = 'A'
-
+    ires = 0
     for c in input:
-        result = dir_to_dir(robots_cur[cur], c)
-        resolve_robot(cur + 1, max, result)
+        result = directions[(cur_pos, c)]
 
-        robots_cur[cur] = c
+        cur_pos = c
+        
+        if cur == max:
+            ires += len(result)
+        else:
+            res = resolve_robot(cur + 1, max, result)
+            ires += res
 
-        if cur == 2:
-            lenr2 += len(result)
-        elif cur == 25:
-            lenr25 += len(result)
+    return ires
 
 
-num_cur = 'A'
+@cache
+def dir_to_numeric(cur: str, new: str, depth: int):
+    cy, cx = numeric[cur]
+    ny, nx = numeric[new]
+    xdiff, ydiff = abs(cx - nx), abs(cy - ny)
+    xch, ych = '<' if nx < cx else '>', '^' if ny < cy else 'v'
 
-result_p1 = 0
-result_p2 = 0
-for line in lines:
-    print('\n', line)
-    val = int(line[:3])
+    start = ''
+    test_input = ''
+    if cy == 3 and nx == 0:
+        start = '^'
+        test_input += ych * (ydiff - 1) + xch * xdiff
+    elif ny == 3 and cx == 0:
+        start = '>'
+        test_input += ych * ydiff + xch * (xdiff - 1)
+    else:
+        test_input += ych * ydiff + xch * xdiff
 
-    for c in line:
-        print(c)
-        robots_cur.clear()
-        result = dir_to_numeric(num_cur, c)
-        resolve_robot(1, 25, result)
+    possibles = [f"{start}{''.join(x)}A" for x in set(permutations(test_input))]
 
-        num_cur = c
+    best_result = inf
+    best_input = None
 
-    result_p1 += lenr2 * val
-    result_p2 += lenr25
-    lenr2 = 0
-    lenr25 = 0
+    for inp in possibles:
+        result = resolve_robot(0, depth, inp)
+        if result < best_result:
+            best_result = result
+            best_input = inp
+
+    return best_input
+
+
+def solve(depth: int):
+    num_cur = 'A'
+
+    ret_value = 0
+    for line in lines:
+        val = int(line[:3])
+
+        for c in line:
+            result = dir_to_numeric(num_cur, c, depth)
+            ret_value += resolve_robot(1, depth, result) * val
+
+            num_cur = c
+
+    return ret_value
+
+
+result_p1 = solve(2)
+result_p2 = solve(25)
 
 print(f"Part 1: {result_p1}")
 print(f"Part 2: {result_p2}")
