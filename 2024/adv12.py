@@ -55,7 +55,71 @@ result_p1 = 0
 result_p2 = 0
 for _, farmgroup in enumerate(farms.values()):
     for farm in farmgroup:
-        result_p1 += len(farm["cells"]) * sum(farm["perimeters"])
+        count = len(farm["cells"])
+        result_p1 += count * sum(farm["perimeters"])
+        min_i, min_j = farm["cells"][0]
+        max_i, max_j = farm["cells"][0]
+
+        for cell in farm["cells"]:
+            if cell[0] < min_i:
+                min_i = cell[0]
+            elif cell[0] > max_i:
+                max_i = cell[0]
+
+            if cell[1] < min_j:
+                min_j = cell[1]
+            elif cell[1] > max_j:
+                max_j = cell[1]
+
+        if min_i == max_i or min_j == max_j:
+            result_p2 += count * 4 # 4 sides
+        else:
+            for i in range(min_i, max_i + 1):
+                is_on_top_edge = False
+                is_on_bottom_edge = False
+                is_on_left_edge = False
+                for j in range(min_j, max_j + 1):
+                    if (i, j) in farm["cells"]:
+                        if not is_on_top_edge and (i == 0 or (i - 1, j) not in farm["cells"]):
+                            result_p2 += count
+                            is_on_top_edge = True
+                        elif (i - 1, j) in farm["cells"]:
+                            is_on_top_edge = False
+                    else:
+                        is_on_top_edge = False
+
+                    if (i, j) in farm["cells"]:
+                        if not is_on_bottom_edge and (i == height - 1 or (i + 1, j) not in farm["cells"]):
+                            result_p2 += count
+                            is_on_bottom_edge = True
+                        elif (i + 1, j) in farm["cells"]:
+                            is_on_bottom_edge = False
+                    else:
+                        is_on_bottom_edge = False
+
+            for j in range(min_j, max_j + 1):
+                is_on_left_edge = False
+                is_on_right_edge = False
+                for i in range(min_i, max_i + 1):
+                    if (i, j) in farm["cells"]:
+                        if not is_on_left_edge and (j == 0 or (i, j - 1) not in farm["cells"]):
+                            result_p2 += count
+                            is_on_left_edge = True
+                        elif (i, j - 1) in farm["cells"]:
+                            is_on_left_edge = False
+                    else:
+                        is_on_left_edge = False
+
+                    if (i, j) in farm["cells"]:
+                        if not is_on_right_edge and (j == width - 1 or (i, j + 1) not in farm["cells"]):
+                            result_p2 += count
+                            is_on_right_edge = True
+                        elif (i, j + 1) in farm["cells"]:
+                            is_on_right_edge = False
+                    else:
+                        is_on_right_edge = False
+
+
 
 print(f"Part 1: {result_p1}")
 print(f"Part 2: {result_p2}")
