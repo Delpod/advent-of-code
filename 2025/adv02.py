@@ -11,19 +11,12 @@ for bounds in line.split(','):
 
     for num in range(l_bound, r_bound + 1, 1):
         num_str = str(num)
-        length = len(num_str)
-        half_length = int(length / 2)
 
-        if num_str[:half_length] == num_str[half_length:]:
+        if re.match("^(\\d+)\\1$", num_str):
             sum_p1 += num
-            sum_p2 += num
-            continue
         
-        for j in range(1, half_length + 1):
-            list = re.findall(num_str[:j], num_str)
-            if j * len(list) == length:
-                sum_p2 += num
-                break
+        if re.match("^(\\d+)\\1+$", num_str):
+            sum_p2 += num
 
 print(f"Part 1: {sum_p1}")
 print(f"Part 2: {sum_p2}")
